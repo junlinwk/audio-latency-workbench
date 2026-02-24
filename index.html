@@ -1257,8 +1257,8 @@
 
             // Calculate safe width: window width - total horizontal padding
             // Body (12*2=24) + Shell (12*2=24) + Card (8*2=16) = 64px minimum blockage
-            // Add extra 24px safety margin = 88px total reduction from window width
-            const totalPadding = windowWidth < 600 ? 88 : 120; 
+            // User requested more shrinking. Let's start with 100px.
+            const totalPadding = windowWidth < 600 ? 120 : 120; 
             
             const maxAllowedWidth = Math.max(windowWidth - totalPadding, 200);
 
