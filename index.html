@@ -634,16 +634,50 @@
         }
 
         @media (max-width: 860px) {
+            body {
+                padding: 12px;
+                align-items: flex-start;
+            }
+
+            .app-shell {
+                padding: 16px;
+                border-radius: 20px;
+            }
+
             .workspace {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
 
             .result-column {
-                order: -1;
+                order: 1; /* Move results below canvas on mobile */
+            }
+
+            .metric-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .top-row {
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
             }
             
-            .top-row {
-                margin-bottom: 0;
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .control-row {
+                gap: 8px;
+            }
+
+            .primary-btn, .secondary-btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                min-width: 100px;
             }
         }
     </style>
@@ -1198,7 +1232,9 @@
 
         function resizeCanvas() {
             const dpr = window.devicePixelRatio || 1;
-            const cssSize = clamp(Math.min(window.innerWidth * 0.8, 380), 280, 380);
+            // On mobile, use more width for potential tap targets
+            const maxWidth = window.innerWidth < 600 ? window.innerWidth - 64 : window.innerWidth * 0.8;
+            const cssSize = clamp(Math.min(maxWidth, 380), 220, 380);
             state.canvasSize = cssSize;
             el.canvas.style.width = `${cssSize}px`;
             el.canvas.style.height = `${cssSize}px`;
