@@ -1251,20 +1251,30 @@
 
         function resizeCanvas() {
             const dpr = window.devicePixelRatio || 1;
-            // On mobile, account for all padding (body 24px + shell 32px + card 16px = ~72px, plus safety margin)
-            const paddingOffset = window.innerWidth < 600 ? 80 : 120; 
-            const maxWidth = Math.max(window.innerWidth - paddingOffset, 200);
             
-            // Allow larger size on desktop, constrain on mobile
-            const targetSize = window.innerWidth < 600 ? maxWidth : Math.min(maxWidth, 380);
+            // Use window.innerWidth directly to avoid feedback loops if container is already stretched
+            const windowWidth = Math.min(window.innerWidth, document.documentElement.clientWidth);
+
+            // Calculate safe width: window width - total horizontal padding
+            // Body (12*2=24) + Shell (12*2=24) + Card (8*2=16) = 64px minimum blockage
+            // Add extra 24px safety margin = 88px total reduction from window width
+            const totalPadding = windowWidth < 600 ? 88 : 120; 
+            
+            const maxAllowedWidth = Math.max(windowWidth - totalPadding, 200);
+
+            // Allow larger size on desktop (up to 450), constrain on mobile
+            // On mobile, we want it as large as possible without overflow
+            const targetSize = windowWidth < 600 ? maxAllowedWidth : Math.min(maxAllowedWidth, 380);
+            
             const cssSize = clamp(targetSize, 200, 450);
             
             state.canvasSize = cssSize;
             el.canvas.style.width = `${cssSize}px`;
             el.canvas.style.height = `${cssSize}px`;
+            
             el.canvas.width = Math.floor(cssSize * dpr);
             el.canvas.height = Math.floor(cssSize * dpr);
-            // Reset transform for new size/DPR
+            
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
