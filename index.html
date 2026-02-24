@@ -640,13 +640,32 @@
             }
 
             .app-shell {
-                padding: 16px;
+                padding: 16px 12px; /* Reduce horizontal padding */
                 border-radius: 20px;
+                width: 100%; /* Ensure full width */
             }
 
             .workspace {
                 grid-template-columns: 1fr;
                 gap: 20px;
+                width: 100%;
+            }
+
+            .canvas-card {
+                padding: 16px 8px; /* Reduce internal padding for canvas card */
+                width: 100%;
+                border-radius: 20px;
+            }
+            
+            .canvas-wrap {
+                width: 100%;
+                padding: 10px 0;
+            }
+            
+            canvas {
+                /* Let JS handle specific pixel size, but ensure CSS doesn't force overflow */
+                max-width: 100%;
+                height: auto; 
             }
 
             .result-column {
@@ -1232,14 +1251,20 @@
 
         function resizeCanvas() {
             const dpr = window.devicePixelRatio || 1;
-            // On mobile, use more width for potential tap targets
-            const maxWidth = window.innerWidth < 600 ? window.innerWidth - 64 : window.innerWidth * 0.8;
-            const cssSize = clamp(Math.min(maxWidth, 380), 220, 380);
+            // On mobile, account for all padding (body 24px + shell 32px + card 16px = ~72px, plus safety margin)
+            const paddingOffset = window.innerWidth < 600 ? 80 : 120; 
+            const maxWidth = Math.max(window.innerWidth - paddingOffset, 200);
+            
+            // Allow larger size on desktop, constrain on mobile
+            const targetSize = window.innerWidth < 600 ? maxWidth : Math.min(maxWidth, 380);
+            const cssSize = clamp(targetSize, 200, 450);
+            
             state.canvasSize = cssSize;
             el.canvas.style.width = `${cssSize}px`;
             el.canvas.style.height = `${cssSize}px`;
             el.canvas.width = Math.floor(cssSize * dpr);
             el.canvas.height = Math.floor(cssSize * dpr);
+            // Reset transform for new size/DPR
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
