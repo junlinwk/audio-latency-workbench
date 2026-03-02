@@ -2,9 +2,12 @@
 
 [繁體中文](#繁體中文) | [English](#english)
 
+
 ---
 
 ## 繁體中文
+
+>  [**點我立刻開始測試！**](https://junlinwk.github.io/audio-latency-workbench/)
 
 ### 專案簡介
 **SyncCircle** 是基於網頁的高精度音訊延遲測量工具。透過視覺化的圓環幫助使用者測量藍牙耳機、喇叭或音效卡的輸出延遲。
@@ -18,6 +21,8 @@
 ---
 
 ## English
+
+>  [**Click here to test immediately!**](https://junlinwk.github.io/audio-latency-workbench/)
 
 ### Project Overview
 **SyncCircle** is a high-precision, web-based audio latency measurement tool.  It utilizes a visual ring to help users estimate the output latency of Bluetooth headphones, speakers, or sound cards.
